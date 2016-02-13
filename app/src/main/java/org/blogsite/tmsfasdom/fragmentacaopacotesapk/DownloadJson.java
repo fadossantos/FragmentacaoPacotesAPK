@@ -20,9 +20,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Denize on 11/02/2016.
- */
+
 public class DownloadJson extends IntentService {
     public static final int UPDATE_PROGRESS = 8344;
     public static final int FINISH_PROGRESS = 8345;
@@ -35,7 +33,7 @@ public class DownloadJson extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d("informacao", "onHandleIntent: dentro do svc");
-        ResultReceiver receiver = (ResultReceiver) intent.getParcelableExtra("receiver");
+        ResultReceiver receiver = intent.getParcelableExtra("receiver");
         Bundle resultData = new Bundle();
         InformacoesArquivo pct;
         pct = FragmentacaoPacotesWCF.RetornaInformacoesArquivo("tmd_pmesp-6.2.2.0.apk");
@@ -49,9 +47,10 @@ public class DownloadJson extends IntentService {
         dados.append(pct.quantidadePacotes);
         dados.append("/n");
         dados.append(pct.tamanhoArquivo);
+        //bbbbbb
 
         Log.d("Debug", "String recebida: " + dados);
-        String path = "";
+        String path;
         File file;
         if (isExternalStorageWritable()) {
             file = new File(getExternalFilesDir(null), "Retorno.txt");
@@ -105,10 +104,7 @@ public class DownloadJson extends IntentService {
 
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
 
 
     }
