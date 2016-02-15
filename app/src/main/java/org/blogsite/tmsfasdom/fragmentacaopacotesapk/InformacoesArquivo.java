@@ -1,19 +1,50 @@
 package org.blogsite.tmsfasdom.fragmentacaopacotesapk;
 
+
+import java.sql.Date;
+
 /**
  * Created by Denize on 12/02/2016.
  */
 public class InformacoesArquivo {
-    int indexArquivo;
-    String nomeArquivo;
-    int quantidadePacotes;
-    int tamanhoArquivo;
+    int _id;
+    String id_arquivo;
+    String nomearquivo;
+    String versao;
+    String status;
+    String datainicio;
+    String datafim;
+    String caminhoarquivo;
+    int quantidadepacotes;
+    int tamanhoarquivo;
 
-    public InformacoesArquivo(int indexArquivo_, String nomeArquivo_, int quantidadePacotes_, int tamanhoArquivo_) {
-        this.indexArquivo = indexArquivo_;
-        this.nomeArquivo = nomeArquivo_;
-        this.quantidadePacotes = quantidadePacotes_;
-        this.tamanhoArquivo = tamanhoArquivo_;
+
+
+
+    public InformacoesArquivo(
+            int      _id_
+            ,String id_arquivo_
+            ,String nomearquivo_
+            ,String versao_
+            ,String status_
+            ,String datainicio_
+            ,String datafim_
+            ,String caminhoarquivo_
+            ,int    quantidadepacotes_
+            ,int    tamanhoarquivo_
+    )
+    {
+        this._id = _id_;
+        this.id_arquivo = id_arquivo_;
+        this.nomearquivo = nomearquivo_;
+        this.versao = versao_;
+        this.status = status_;
+        this.datainicio = datainicio_;
+        this.datafim = datafim_;
+        this.caminhoarquivo = caminhoarquivo_;
+        this.quantidadepacotes = quantidadepacotes_;
+        this.tamanhoarquivo = tamanhoarquivo_;
+
     }
 
 

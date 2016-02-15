@@ -1,0 +1,2 @@
+﻿create table arquivosbaixados (_id integer primary key autoincrement not null, id_arquivo text not null, nomearquivo text not null, versao text not null, status string not null, quantidadepacotes integer, tamanhoarquivo integer, datainicio datetime, datafim datetime, caminhoarquivo text);
+create table pacotes (_id integer primary key autoincrement not null, id_arquivo text not null, id_pct int not null, nomearquivo text not null, versao text not null, caminho text not null, pctbase64 nvarchar(100000));

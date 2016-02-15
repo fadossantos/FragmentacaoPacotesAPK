@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS ArquivosBaixados
+DROP TABLE IF EXISTS Pacotes
