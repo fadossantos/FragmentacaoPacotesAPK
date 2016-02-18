@@ -7,14 +7,14 @@ import java.sql.Date;
  * Created by Denize on 12/02/2016.
  */
 public class InformacoesArquivo {
-    int _id;
+    transient int _id;
     String id_arquivo;
     String nomearquivo;
     String versao;
-    String status;
-    String datainicio;
-    String datafim;
-    String caminhoarquivo;
+    transient String status;
+    transient String datainicio;
+    transient String datafim;
+    transient String caminhoarquivo;
     int quantidadepacotes;
     int tamanhoarquivo;
 

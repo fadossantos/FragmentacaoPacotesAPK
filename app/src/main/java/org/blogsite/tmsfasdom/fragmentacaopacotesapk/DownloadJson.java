@@ -35,13 +35,15 @@ public class DownloadJson extends IntentService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<InformacoesArquivo> inf = new ArrayList<InformacoesArquivo>();
-        for (String str : listStr) {
+        List<InformacoesArquivo> inf = new ArrayList<>();
+        if(listStr != null) {
+            for (String str : listStr) {
 
-            try {
-                inf.add(FragmentacaoPacotesWCF.RetornaInformacoesArquivo(str));
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    inf.add(FragmentacaoPacotesWCF.RetornaInformacoesArquivo(str));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         for (InformacoesArquivo infarq : inf) {
@@ -105,6 +107,13 @@ public class DownloadJson extends IntentService {
             return DOWNLOAD_INTERROMPIDO;
         }
         return DOWNLOAD_CONCLUIDO;
+    }
+
+    private InformacoesArquivo downloadEmAndamento(){
+        InformacoesArquivo retorno = null;
+
+
+        return retorno;
     }
 
     private boolean downloadIniciado(InformacoesArquivo infArq) {
