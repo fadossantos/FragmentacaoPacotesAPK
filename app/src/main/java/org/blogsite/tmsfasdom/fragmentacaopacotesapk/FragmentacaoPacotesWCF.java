@@ -12,20 +12,16 @@ public class FragmentacaoPacotesWCF {
     final static private String urlMetodoRetornaListaArquivos = "http://tmsfasdom.com.br/Pacotes/SVC_DownloadArquivo.svc/rest/retornalistaarquivos";
     final static private String urlMetodoRetornaInfoArquivo = "http://tmsfasdom.com.br/Pacotes/SVC_DownloadArquivo.svc/rest/retornainformacoesarquivo";
 
-    public static Pacote RetornaPacote(String id_Arquivo, int id_Pacote) throws IOException {
+    public static Pacote RetornaPacote(String id_Arquivo, String versao, int id_Pacote) throws IOException {
         StringBuilder url = new StringBuilder(urlMetodoRetornaPacote);
-        url.append("/").append(id_Arquivo).append("/").append(id_Pacote);
+        url.append("/").append(id_Arquivo).append("/").append(versao).append("/").append(id_Pacote);
         String retorno = WebServiceHelp.ChamadaGet(url.toString());
         Gson json = new Gson();
-       // Pacote pct = new Pacote();
-       // pct.pctbase64 = retorno;
-//TODO
-
         Pacote pct = json.fromJson(retorno, Pacote.class);
         return pct;
     }
 
-    public static String[]  RetornaListaArquivos() throws IOException {
+    public static String[] RetornaListaArquivos() throws IOException {
         String retorno = WebServiceHelp.ChamadaGet(urlMetodoRetornaListaArquivos);
         Gson json = new Gson();
         return json.fromJson(retorno, String[].class);

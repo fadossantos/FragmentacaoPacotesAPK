@@ -14,9 +14,6 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Denize on 14/02/2016.
- */
 public class BaseDados {
 
     SQLiteDatabase bd;
@@ -46,19 +43,20 @@ public class BaseDados {
             bd = auxBd.getWritableDatabase();
             }
         Cursor cursor = bd.rawQuery(sql, args);
-        bd.close();
+        //bd.close();
         return cursor;
     }
 
-    public void insert(String tabela, ContentValues valores)
+    public int insert(String tabela, ContentValues valores)
     {
 
         if(!(bd.isOpen())) {
             BaseDadosCore auxBd = new BaseDadosCore(ctx);
             bd = auxBd.getWritableDatabase();
         }
-        bd.insert(tabela, null, valores);
+        int retorno = (int)bd.insert(tabela, null, valores);
         bd.close();
+        return retorno;
     }
 
     public void deleteAll(String tabela)
@@ -79,6 +77,10 @@ public class BaseDados {
             bd = auxBd.getWritableDatabase();
         }
         bd.delete(tabela, where, args);
+        bd.close();
+    }
+
+    public void close(){
         bd.close();
     }
 

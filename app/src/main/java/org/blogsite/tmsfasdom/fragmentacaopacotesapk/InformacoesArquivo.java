@@ -3,15 +3,12 @@ package org.blogsite.tmsfasdom.fragmentacaopacotesapk;
 
 import java.sql.Date;
 
-/**
- * Created by Denize on 12/02/2016.
- */
 public class InformacoesArquivo {
     transient int _id;
     String id_arquivo;
     String nomearquivo;
     String versao;
-    transient String status;
+    transient int status;
     transient String datainicio;
     transient String datafim;
     transient String caminhoarquivo;
@@ -26,7 +23,7 @@ public class InformacoesArquivo {
             ,String id_arquivo_
             ,String nomearquivo_
             ,String versao_
-            ,String status_
+            ,int status_
             ,String datainicio_
             ,String datafim_
             ,String caminhoarquivo_

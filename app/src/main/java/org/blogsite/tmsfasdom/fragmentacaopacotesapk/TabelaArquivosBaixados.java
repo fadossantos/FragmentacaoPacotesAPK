@@ -7,24 +7,22 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Denize on 15/02/2016.
- */
 public class TabelaArquivosBaixados {
 
     /**
      * Created by Denize on 15/02/2016.
      */
 
-    private static final String TABELA = "arquivosbaixados";
-    public BaseDados bd;
+    public static final String TABELA = "arquivosbaixados";
+    public static final String LISTACAMPOS = "Select _id, id_arquivo, nomearquivo, versao, status, datainicio, datafim, caminhoarquivo, quantidadepacotes, tamanhoarquivo from " + TABELA;
+    private BaseDados bd;
 
     public TabelaArquivosBaixados(Context ctx) {
         bd = new BaseDados(ctx);
     }
 
 
-    public void inserir(InformacoesArquivo informacoesArquivo) {
+    public int inserir(InformacoesArquivo informacoesArquivo) {
         ContentValues valores = new ContentValues();
         valores.put("id_arquivo", informacoesArquivo.id_arquivo);
         valores.put("nomearquivo", informacoesArquivo.nomearquivo);
@@ -35,7 +33,7 @@ public class TabelaArquivosBaixados {
         valores.put("caminhoarquivo", informacoesArquivo.caminhoarquivo);
         valores.put("quantidadepacotes", informacoesArquivo.quantidadepacotes);
         valores.put("tamanhoarquivo", informacoesArquivo.tamanhoarquivo);
-        bd.insert(TABELA, valores);
+        return bd.insert(TABELA, valores);
     }
 
 
@@ -47,7 +45,7 @@ public class TabelaArquivosBaixados {
             valores.put("nomearquivo", informacoesArquivo.nomearquivo);
         if (informacoesArquivo.versao != null && informacoesArquivo.versao != "")
             valores.put("versao", informacoesArquivo.versao);
-        if (informacoesArquivo.status != null && informacoesArquivo.status != "")
+        if (informacoesArquivo.status != 0)
             valores.put("status", informacoesArquivo.status);
         if (informacoesArquivo.datainicio != null && informacoesArquivo.datainicio != "")
             valores.put("datainicio", informacoesArquivo.datainicio);
@@ -71,8 +69,8 @@ public class TabelaArquivosBaixados {
     }
 
     public List<InformacoesArquivo> buscarTodos() {
-        List<InformacoesArquivo> list = new ArrayList<InformacoesArquivo>();
-        String sql = "Select _id, id_arquivo, nomearquivo, versao, status, datainicio, datafim, caminhoarquivo, quantidadepacotes, tamanhoarquivo, from " + TABELA;
+        List<InformacoesArquivo> list = new ArrayList<>();
+        String sql = "Select _id, id_arquivo, nomearquivo, versao, status, datainicio, datafim, caminhoarquivo, quantidadepacotes, tamanhoarquivo from " + TABELA;
         Cursor cursor = bd.select(sql, null);
 
         if (cursor.getCount() > 0) {
@@ -83,7 +81,7 @@ public class TabelaArquivosBaixados {
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        cursor.getString(4),
+                        cursor.getInt(4),
                         cursor.getString(5),
                         cursor.getString(6),
                         cursor.getString(7),
@@ -94,7 +92,35 @@ public class TabelaArquivosBaixados {
 
             } while (cursor.moveToNext());
         }
+        bd.close();
+        return list;
 
+    }
+
+    public List<InformacoesArquivo> buscar(String sql, String[] parametros) {
+        List<InformacoesArquivo> list = new ArrayList<>();
+        Cursor cursor = bd.select(sql, parametros);
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                InformacoesArquivo infArq = new InformacoesArquivo(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getInt(8),
+                        cursor.getInt(9)
+                );
+                list.add(infArq);
+
+            } while (cursor.moveToNext());
+        }
+        bd.close();
         return list;
     }
 }

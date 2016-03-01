@@ -2,46 +2,29 @@ package org.blogsite.tmsfasdom.fragmentacaopacotesapk;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Created by Denize on 13/02/2016.
- */
 public class FileUtils {
 
     Context context;
 
     FileUtils(Context context_)
+
     {
         this.context = context_;
     }
 
-    public boolean PersistirSD(String filename, String dados){
-
-        File diretorioBase = getDirFromSDCard();
-        File file;
-        String path;
-
-        if (diretorioBase != null) {
-            file = new File(diretorioBase, filename);
-            file.delete();
-            path = file.getAbsolutePath();
-
-        } else {
-            file = new File(context.getExternalFilesDir(null), filename);
-            file.delete();
-            path = file.getAbsolutePath();
-        }
+    public boolean persistirPacoteNoArquivo(String filename, String pctbase64) {
 
         try {
-            OutputStream outputFile = new FileOutputStream(file, true);
-            outputFile.write(dados.getBytes());
+            OutputStream outputFile = new FileOutputStream(new File(filename), true);
+            outputFile.write(Base64.decode(pctbase64, Base64.DEFAULT));
             outputFile.flush();
             outputFile.close();
         } catch (IOException e) {
@@ -49,7 +32,7 @@ public class FileUtils {
             Log.d("Erro", "PersistirSD: erro ao salvar arquivo");
             return false;
         }
-        Log.d("Info", "PersistirSD: Arquivo salvo em: " + path);
+        Log.d("Info", "PersistirSD: Arquivo salvo em: " + filename);
         return true;
     }
 
@@ -58,17 +41,18 @@ public class FileUtils {
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
-    private File getDirFromSDCard() {
+    public String retornaCaminhoArquivoParaPersistir(InformacoesArquivo informacoesArquivo) {
         if (isExternalStorageWritable()) {
-            File sdcard = Environment.getExternalStorageDirectory().getAbsoluteFile();
-            File dir = new File(sdcard, context.getPackageName() + File.separator + "Files");
-            if (!dir.exists())
+            File dir = context.getExternalFilesDir(null);
+            //File dir = new File(sdcard, context.getPackageName() + File.separator + "Files");
+            if (dir != null && !dir.exists()) {
                 dir.mkdirs();
-            return dir;
+            }
+            File arquivofinal = new File(dir.getAbsolutePath() + File.separator + informacoesArquivo.versao + "_" + informacoesArquivo.nomearquivo);
+            arquivofinal.delete();
+            return arquivofinal.getAbsolutePath();
         } else {
             return null;
         }
     }
-
-
 }

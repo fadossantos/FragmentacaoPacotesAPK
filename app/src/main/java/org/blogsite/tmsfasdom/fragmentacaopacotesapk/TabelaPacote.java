@@ -27,9 +27,9 @@ public class TabelaPacote {
         valores.put("nomearquivo", pacote.nomearquivo);
         valores.put("versao", pacote.versao);
         valores.put("caminho", pacote.caminho);
-        valores.put("dados", pacote.pctbase64);
+        valores.put("pctbase64", pacote.pctbase64);
 
-        bd.insert(TABELA,valores);
+        bd.insert(TABELA, valores);
     }
 
 
@@ -67,9 +67,10 @@ public class TabelaPacote {
         bd.delete(TABELA, "_id = " + pacote._id, null);
     }
 
-    public void deletarTodos()
+    public void deletarTodos(InformacoesArquivo informacoesArquivo)
+
     {
-        bd.deleteAll(TABELA);
+        bd.delete(TABELA, " id_arquivo = ? and versao = ?", new String[]{informacoesArquivo.id_arquivo, informacoesArquivo.versao});
     }
 
     public List<Pacote> buscarTodos() {
@@ -93,7 +94,45 @@ public class TabelaPacote {
 
             } while (cursor.moveToNext());
         }
+        bd.close();
 
         return list;
+    }
+
+    public Pacote buscarPacote(String id_arquivo, String versao, int id_pct) {
+        List<Pacote> list = new ArrayList<Pacote>();
+        String sql = "Select _id, id_arquivo, versao, id_pct, nomearquivo, caminho, pctbase64 from pacotes where id_arquivo = ? and versao = ? and id_pct = ?";
+        String[] whereArgs = new String[]{id_arquivo, versao, String.valueOf(id_pct)};
+        Cursor cursor = bd.select(sql, whereArgs);
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                Pacote p = new Pacote(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6));
+
+                list.add(p);
+
+            } while (cursor.moveToNext());
+        }
+        bd.close();
+        if (list.isEmpty())
+            return null;
+        else
+            return list.get(0);
+    }
+
+    public int getCount(InformacoesArquivo informacoesArquivo) {
+        String sql = "Select count(*) from pacotes where id_arquivo = ? and versao = ?";
+        Cursor cursor = bd.select(sql, new String[]{informacoesArquivo.id_arquivo, informacoesArquivo.versao});
+        cursor.moveToFirst();
+        int retorno = cursor.getInt(0);
+        bd.close();
+        return retorno;
     }
 }
